@@ -4,8 +4,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.Toast;
 
+import com.example.rafasj6.flixter.models.Config;
 import com.example.rafasj6.flixter.models.Movie;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -36,15 +38,13 @@ public class MovieListActivity extends AppCompatActivity {
 
     AsyncHttpClient client;
 
-    String imageBaseUrl;
-    //poster size to fetch images
-    String posterSize;
-
     ArrayList<Movie> movies;
 
     RecyclerView rvMovies;
 
     MovieAdapter adapter;
+
+    Config config;
 
 
     @Override
@@ -114,11 +114,9 @@ public class MovieListActivity extends AppCompatActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 try {
-                    JSONObject images = response.getJSONObject("images");
-                    imageBaseUrl = images.getString("secure_base_url");
-                    JSONArray posterSizeOptions = images.getJSONArray("poster_sizes");
-                    posterSize = posterSizeOptions.optString(3,"w342");
-                    log.i(TAG, String.format("LOADED image url: &s and poster size: %s", imageBaseUrl, posterSize));
+                    config = new Config(response);
+                    adapter.setConfig(config);
+                    Log.i(TAG, String.format("LOADED image url: &s and poster size: %s", config.getImageBaseUrl(), config.getPosterSize()));
 
                 } catch (JSONException e) {
                     logError("Failed parsing config", e, true);
@@ -140,7 +138,7 @@ public class MovieListActivity extends AppCompatActivity {
     private void logError(String message, Throwable error, boolean alertUser){
 
         //log it
-        log.e(TAG,message,error);
+        Log.e(TAG,message,error);
         //aler the user
         if (alertUser){
             //show a Toast
