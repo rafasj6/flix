@@ -23,6 +23,7 @@
         android:text="Movie Title"
         android:textAppearance="@android:style/TextAppearance.Large"
         android:layout_alignParentRight="true"
+        android:textColor="#FFFFFF"
         android:layout_alignParentEnd="true" />
 
     <TextView
@@ -33,6 +34,9 @@
         android:layout_toRightOf="@+id/ivPosterImage"
         android:text="Overview and other stuff"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:textColor="#FFFFFF"
+        android:maxLines="5"/>
+
 
 </RelativeLayout>
